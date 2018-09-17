@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <!-- LINK TO FIREBASE GOES HERE Dont forget to switch to the current one!!!!!!!!!! -->
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+    <link rel="stylesheet" href="./css/main.css">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Train Schedule</title>
+</head>
+
+
+<body>
+
+
+    <div class="jumbotron jumbotron-fluid" style="background-color:goldenrod">
+        <div class="banner">
+            <h1 class="display-4">Train Schedule</h1>
+            <p class="lead">Keep watch for your schedule in real time!</p>
+        </div>
+    </div>
+
+    <!--   Trains would populate here           -->
+    <div class="trainTable">
+        <div class="card" style="width: 100%;">
+            <div class="card-body">
+                <!--table goes here-->
+                <table class="table table-striped table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Train Name</th>
+                            <th scope="col">Destination</th>
+                            <th scope="col">Frequency (min)</th>
+                            <th scope="col">Next Arrival</th>
+                            <th scope="col">Minutes Away</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td class="name-display"></td>
+                            <td class="destination-display"></td>
+                            <td class="nextArrival-display"></td>
+                            <td class="minutesAway-display"></td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td class="name-display"></td>
+                            <td class="destination-display"></td>
+                            <td class="nextArrival-display"></td>
+                            <td class="minutesAway-display"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td class="name-display"></td>
+                            <td class="destination-display"></td>
+                            <td class="nextArrival-display"></td>
+                            <td class="minutesAway-display"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <!--               After banner                       -->
+
+
+    <div class="container">
+
+
+        <!-- Adding Trains-->
+        <div class="col-lg-8">
+            <div class="card card-default">
+                <div class="card-header">
+                    Add Train
+                </div>
+                <div class="card-body">
+
+                    <!-- Sign-up Form -->
+
+                    <form role="form">
+                        <div class="form-group row">
+                            <label for="name-input">Name</label>
+                            <input class="form-control" id="name-input" type="text">
+                        </div>
+                        <div class="form-group row">
+                            <label for="destination-input">Destination</label>
+                            <input class="form-control" id="destination-input" type="text">
+                        </div>
+                        <div class="form-group row">
+                            <label for="first-train-input">First Train Time (HH:MM = Military Time)</label>
+                            <input class="form-control" id="first-train-input" type="text">
+                        </div>
+                        <div class="form-group row">
+                            <label for="frequency-input">Frequency (min)</label>
+                            <input class="form-control" id="frequency-input" type="text">
+                        </div>
+                        <button class="btn btn-default" id="submit" type="submit">Submit</button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+
+
+    <script>
+
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDTQfRM8M0Z22dueijw5o6tRKkbrtzPqPc",
+            authDomain: "trainschedule-d55f7.firebaseapp.com",
+            databaseURL: "https://trainschedule-d55f7.firebaseio.com",
+            projectId: "trainschedule-d55f7",
+            storageBucket: "",
+            messagingSenderId: "372476102562"
+        };
+        firebase.initializeApp(config);
+
+
+
+        // Capture Button Click
+        $("#submit").on("click", function (event) {
+            // Don't refresh the page!
+            event.preventDefault();
+
+            var database = firebase.database();
+            var name = $("#name-input").val().trim();
+            var destination = $("#destination-input").val().trim();
+            var firstTrain = $("#first-train-input").val().trim();
+            var frequency = $("#frequency-input").val().trim();
+
+
+            database.ref('/train_times').push({
+                name: name,
+                destination: destination,
+                firstTrain: firstTrain,
+                frequency: frequency
+            });
+
+
+            database.ref("train_times").on("child_added", function (snapshot) {
+                var sv = snapshot.val();
+                console.log(sv.name);
+                console.log(sv.destination);
+                console.log(sv.firstTrain);
+                console.log(frequency);
+            });
+
+        //application to the dom
+            $("#name-display").text(sv.name);
+            $("#destination-display").text(sv.name);
+            $("#nextArrival-display").text(sv.name);
+            $("#minutesAway-display").text(sv.name);
+
+
+        
+        });
+
+
+
+
+    </script>
+
+
+
+
+
+</body>
+
+</html>
